@@ -116,7 +116,6 @@ class SpanNerPipe(UnifyPipe):
                     indexes += [i + next_word_idx for i in _indexes]
                     spans += [(s+next_word_idx-1, e+next_word_idx-1, label2idx.get(t), ) for s, e, t in _raw_ents]
                 else:
-                    self.num_truncate += 1
                     new_ins = get_new_ins(bpes, spans, indexes)
                     ins_lst.append(new_ins)
                     indexes = [0] + [i + 1 for i in _indexes]

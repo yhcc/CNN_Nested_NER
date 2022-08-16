@@ -1,4 +1,4 @@
-This is the code for [An Embarrassingly Easy but Strong Baseline for Nested Named Entity Recognition]()
+This is the code for [An Embarrassingly Easy but Strong Baseline for Nested Named Entity Recognition](https://arxiv.org/abs/2208.04534)
 
 We found previous nested NER related work used different sentence tokenizations, resulting in different number of 
 sentences and entities, which would make the comparison between different papers unfair. To solve this 
