@@ -10,7 +10,7 @@ from .multi_head_biaffine import MultiHeadBiaffine
 
 class CNNNer(nn.Module):
     def __init__(self, model_name, num_ner_tag, cnn_dim=200, biaffine_size=200,
-                 size_embed_dim=0, logit_drop=0, use_cnn=True, kernel_size=3, n_head=4, cnn_depth=3):
+                 size_embed_dim=0, logit_drop=0, kernel_size=3, n_head=4, cnn_depth=3):
         super(CNNNer, self).__init__()
         self.pretrain_model = AutoModel.from_pretrained(model_name)
         hidden_size = self.pretrain_model.config.hidden_size
@@ -46,7 +46,7 @@ class CNNNer(nn.Module):
             torch.nn.init.xavier_normal_(self.U.data)
         self.W = torch.nn.Parameter(torch.empty(cnn_dim, hsz))
         torch.nn.init.xavier_normal_(self.W.data)
-        if use_cnn:
+        if cnn_depth>0:
             self.cnn = MaskCNN(cnn_dim, cnn_dim, kernel_size=kernel_size, depth=cnn_depth)
 
         self.down_fc = nn.Linear(cnn_dim, num_ner_tag)

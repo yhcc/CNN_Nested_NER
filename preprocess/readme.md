@@ -92,7 +92,7 @@ After this, you can find the following files in outputs/ace2005 folder
         - english.oneie.jsonlines
 ```
 ### For ACE2005
-Simplely run the following code
+Simply run the following code
 ```bash
 python process_ace2005.py
 ```
@@ -161,10 +161,24 @@ each line is a json object, it should look like the following (the start is incl
 ```
 
 ### Genia
-For Genia, we generally follow the train/dev/test split as  [BARTNER](https://aclanthology.org/2021.acl-long.451/) and [W2NER](https://arxiv.org/pdf/2112.10070.pdf).
-But we find that in each split, there exist some duplicated text, such as `(ABSTRACT TRUNCATED AT 250 WORDS)`, we keep one 
-sentence for each duplicated sentences. Besides, there are some annotation conflict in Genia, we fix them manually, the 
-result files are included in the `outputs/genia` folder.
+Simply run the following code (we include the raw data in the repo)
+```bash
+python process_genia.py
+```
+
+For Genia, we modify the pre-process script from [Recognizing Overlapping Mentions with Mention Separators](https://gitlab.com/sutd_nlp/overlapping_mentions/-/tree/master/data/GENIA). 
+However, we find that one document
+is duplicated in the original data (the bibliomisc is MEDLINE:97218353, and we found that the annotation is conflicting) , 
+for this document we use its later version. Besides, the code from [Lu and Roth 2015](https://aclanthology.org/D15-1102.pdf)
+ will over-split the tokens (such as split `IL-2-mediated` into `IL - 2 - mediated`), we delete this part since the pre-trained tokenizers should be able to deal the 
+tokenization issue. Another issue of Lu's code is that they used string matching to get the entity annotation, which will 
+cause wrong entity spans, we fix this.
+And, in order to facilitate future 
+document-level NER, we split by documents (previous work mainly split by sentences). Therefore, the sentences from train,dev,test are from different documents, 
+the ratio of documents in each split is 8:1:1 (We choose this ratio for two reasons, (1) to make the number of documents 
+in the dev and test comparable; (2) although [Lu and Roth 2015](https://aclanthology.org/D15-1102.pdf) claimed the ratio 
+is 8.1:0.9:1 for train/dev/test, their code used 8:1:1). 
+
 
 
 ### Statistics
@@ -179,13 +193,14 @@ The Statistics for ACE2004, ACE2005 and Genia are as follows
 |          |                   |        | ACE2004 |       |        | ACE2005 |       |        | Genia |       |
 |:--------:|:-----------------:|:------:|:-------:|:-----:|:------:|:-------:|:-----:|--------|-------|-------|
 |          |                   | Train  |   Dev   | Test  | Train  |   Dev   | Test  | Train  | Dev   | Test  |
-|          |    Total Sent.    |  6297  |   742   |  824  |  7178  |   960   | 1051  | 14957  | 1667  | 1850  |
-| Sentence | Avg. Sent. Length | 23.36  |  24.26  | 24.03 | 20.87  |  20.57  | 18.65 | 25.35  | 26.04 | 26.03 |
-|          | Max Sent. Length  |  120   |   98    |  113  |  139   |   99    |  88   | 149    | 149   | 106   |
-|          |    Total Ent.     | 22231  |  2514   | 3036  | 25300  |  3321   | 3099  | 45133  | 5365  | 5506  |
-|  Entity  | Avg. Ent. Length  |  2.63  |  2.67   | 2.68  |  2.42  |  2.26   | 2.40  | 1.96   | 1.97  | 2.09  |
-|          |   # Nested Ent.   | 10176  |  1092   | 1422  | 10005  |  1214   | 1186  | 7995   | 1067  | 1199  |
-|  Tokens  |     # Tokens.     | 147128 |  17998  | 19798 | 149843 |  19745  | 19603 | 379231 | 43409 | 48159 |
+|          |    Total Sent.    |  6297  |   742   |  824  |  7178  |   960   | 1051  | 15038  | 1765  | 1732  |
+| Sentence | Avg. Sent. Length | 23.36  |  24.26  | 24.03 | 20.87  |  20.57  | 18.65 | 26.49  | 25.77 | 27.06 |
+|          | Max Sent. Length  |  120   |   98    |  113  |  139   |   99    |  88   | 174    | 136   | 123   |
+|          |    Total Ent.     | 22231  |  2514   | 3036  | 25300  |  3321   | 3099  | 46203  | 4714  | 5119  |
+|  Entity  | Avg. Ent. Length  |  2.63  |  2.67   | 2.68  |  2.42  |  2.26   | 2.40  | 1.98   | 2.17  | 2.12  |
+|          |   # Nested Ent.   | 10176  |  1092   | 1422  | 10005  |  1214   | 1186  | 8309   | 850   | 1156  |
+|  Tokens  |     # Tokens.     | 147128 |  17998  | 19798 | 149843 |  19745  | 19603 | 398328 | 45495 | 46873 |
+
 
 
 

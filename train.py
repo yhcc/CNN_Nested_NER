@@ -39,7 +39,6 @@ parser.add_argument('--cnn_depth', default=3, type=int)
 parser.add_argument('--cnn_dim', default=200, type=int)
 parser.add_argument('--logit_drop', default=0, type=float)
 parser.add_argument('--biaffine_size', default=200, type=int)
-parser.add_argument('--use_cnn', default=1, type=int)
 parser.add_argument('--n_head', default=5, type=int)
 parser.add_argument('--seed', default=None, type=int)
 parser.add_argument('--accumulation_steps', default=1, type=int)
@@ -119,8 +118,7 @@ for name, ds in dl.iter_datasets():
 
 model = CNNNer(model_name, num_ner_tag=matrix_segs['ent'], cnn_dim=args.cnn_dim, biaffine_size=args.biaffine_size,
                  size_embed_dim=size_embed_dim, logit_drop=args.logit_drop,
-                use_cnn=args.use_cnn, kernel_size=kernel_size,
-                n_head=n_head, cnn_depth=args.cnn_depth)
+                kernel_size=kernel_size, n_head=n_head, cnn_depth=args.cnn_depth)
 
 # optimizer
 parameters = []
